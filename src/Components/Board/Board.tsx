@@ -18,6 +18,9 @@ const Board = ({board, onClick}: BoardI) => {
 					onClick={() => {
 						onClick(index);
 					}}
+					onTouch={() => {
+						onClick(index);
+					}}
 				/>)
 			}
 		</div>

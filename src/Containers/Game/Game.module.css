@@ -1,9 +1,16 @@
 .gameScreen{
     cursor: none;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
     width: 100vw;
     padding: var(--cursor-size);
+}
+
+.gameTitle{
+    margin: calc(var(--cell-size)/4);
+    color: wheat;
+    font-size: calc(var(--cell-size)*0.3);
 }

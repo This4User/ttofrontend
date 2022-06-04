@@ -1,17 +1,19 @@
-.cursor{
+.cursor {
+    top: 0;
+    left: 0;
     pointer-events: none;
     position: absolute;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
     z-index: 3;
 }
 
-.cursor img{
+.cursor img {
     height: var(--cursor-size);
     width: var(--cursor-size);
 }
 
-@media (max-width: 768px ) {
-    .cursor{
+@media (pointer: coarse) {
+    .cursor {
         display: none;
     }
 }

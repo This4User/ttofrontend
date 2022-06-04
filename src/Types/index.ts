@@ -8,15 +8,24 @@ export enum BoardEvents {
 	gameFinished = 'gameFinished',
 }
 
+export enum SocketEvents {
+	connect = 'connect',
+	connectError = 'connect_error',
+	disconnect = 'disconnect'
+}
+
 export type UserType = {
 	id: string;
 	name?: string;
-	socket: Socket;
+	socket?: Socket;
 };
 
 export enum RoomEvents {
 	leave = 'leave',
-	restart = 'restart'
+	restart = 'restart',
+	gameStarted = 'gameStarted',
+	playAgain = 'playAgain',
+	countdown = 'countdown'
 }
 
 export type Point = {

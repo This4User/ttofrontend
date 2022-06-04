@@ -29,11 +29,11 @@ const Cursor: React.FunctionComponent<CursorPropsType> = ({img, x, y}) => {
 
 	return (
 		<div
+			className={s.cursor}
 			style={{
 				top: cursorPosition.y,
 				left: cursorPosition.x,
 			}}
-			className={s.cursor}
 		>
 			<img
 				src={img}

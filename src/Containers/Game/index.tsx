@@ -1,70 +1,81 @@
 import React, { useEffect, useState } from 'react';
 import circle from '../../assets/PlayerSigns/circle.png';
 import cross from '../../assets/PlayerSigns/cross.png';
-import Board from '../../Components/Board/Board';
-import { CellType, CellValue } from '../../Components/Cell/Cell';
+import { CellValue } from '../../Components/Cell/Cell';
 import Cursor from '../../Components/Cursor/Cursor';
 import ModalCard from '../../Components/ModalCard/ModalCard';
 import * as Net from '../../Networking';
-import * as NetSubscriptions from '../../Networking/eventbus';
-import { BoardEvents, Point, RoomEvents } from '../../Types';
+import { Point, RoomEvents, SocketEvents } from '../../Types';
+import * as NetSubscriptions from '../../utils/EventBus';
 import s from './Game.module.css';
+import OfflineGame from './OfflineGame';
+import OnlineGame from './OnlineGame';
+
+export type GameType = {
+	onGameEnd: Function;
+	playerSign: CellValue;
+	setPlayerSign: Function;
+	setIsGameFinished: Function;
+}
 
 const Game = () => {
 	const [playerSign, setPlayerSign] = useState<CellValue>(CellValue.empty);
-	const [board, setBoard] = useState<Array<CellType>>();
-	const [isWin, setIsWin] = useState<boolean>(false);
 	const [isGameFinished, setIsGameFinished] = useState<boolean>(false);
+	const [isWin, setIsWin] = useState<boolean | 'deadHeat'>(false);
 	const [isInGame, setIsInGame] = useState<boolean>(false);
-	const [cursorPosition, setCursorPosition] = useState<Point>({x: -200, y: -200});
+	const [isOnline, setIsOnline] = useState<boolean>(false);
+	const [countdown, setCountDown] = useState<number>(0);
+
+	const [cursorPosition, setCursorPosition] = useState<Point>({x: -2000, y: -2000});
 	const cursorImg = playerSign === CellValue.cross ? cross : circle;
+
+	const playAgain = () => {
+		Net.playAgain();
+	};
 
 	useEffect(() => {
 
-		const _setBoard = (board: Array<CellType>) => {
-			setBoard(board);
+		const _connectError = (err: any) => {
+			console.log(err);
+			setIsOnline(false);
+			Net.leave();
 		};
 
-		const _setPlayerSign = (playerSign: CellValue) => {
-			setPlayerSign(playerSign);
+		const _onOnlineGameStarted = () => {
+			setIsOnline(true);
+			console.log('Is Online');
 		};
 
-		const _setWinner = (winnerSign: CellValue) => {
-			setIsGameFinished(true);
-			console.log(winnerSign);
-			console.log(playerSign);
-			if (winnerSign === playerSign) {
-				setIsWin(true);
-			} else {
-				setIsWin(false);
-			}
+		const _playAgain = () => {
+			setIsGameFinished(false);
+			setIsWin(false);
+			console.log('Another player wanna to play again');
+		};
+
+		const _setCountdown = (count: number) => {
+			setCountDown(count);
+			console.log(countdown);
+		};
+
+		const _onLeave = () => {
+			console.log('Player leaved room');
 		};
 
 		setIsInGame(true);
 		Net.addToQueue();
-		NetSubscriptions.subscribe(BoardEvents.getBoard, _setBoard);
-		NetSubscriptions.subscribe(BoardEvents.getPlayerSign, _setPlayerSign);
-		NetSubscriptions.subscribe(BoardEvents.gameFinished, _setWinner);
-		NetSubscriptions.subscribe(RoomEvents.leave, leave);
+		NetSubscriptions.subscribe(RoomEvents.gameStarted, _onOnlineGameStarted);
+		NetSubscriptions.subscribe(SocketEvents.connectError, _connectError);
+		NetSubscriptions.subscribe(RoomEvents.playAgain, _playAgain);
+		NetSubscriptions.subscribe(RoomEvents.countdown, _setCountdown);
+		NetSubscriptions.subscribe(RoomEvents.leave, _onLeave);
 
 		return () => {
-			NetSubscriptions.unsubscribe(BoardEvents.getBoard, _setBoard);
-			NetSubscriptions.unsubscribe(BoardEvents.getPlayerSign, _setPlayerSign);
-			NetSubscriptions.unsubscribe(BoardEvents.gameFinished, _setWinner);
-			NetSubscriptions.unsubscribe(RoomEvents.leave, leave);
+			NetSubscriptions.unsubscribe(RoomEvents.gameStarted, _onOnlineGameStarted);
+			NetSubscriptions.unsubscribe(SocketEvents.connectError, _connectError);
+			NetSubscriptions.unsubscribe(RoomEvents.playAgain, _playAgain);
+			NetSubscriptions.unsubscribe(RoomEvents.countdown, _setCountdown);
 		};
-	}, [playerSign]);
-
-	const makeMove = (index: number): void => {
-		Net.makeMove(index, playerSign);
-	};
-
-	const leave = () => {
-		Net.leave();
-		setIsInGame(false);
-		setIsWin(false);
-		setPlayerSign(CellValue.empty);
-	};
+	}, []);
 
 	return (
 		<div
@@ -76,26 +87,48 @@ const Game = () => {
 				});
 			}}
 		>
-			<Cursor img={cursorImg} y={cursorPosition.y} x={cursorPosition.x}/>
 			{
-				isInGame ?
-					board && <Board
-						board={board}
-						onClick={makeMove}
-					/> : null
+				!isGameFinished && <Cursor
+					img={cursorImg}
+					y={cursorPosition.y}
+					x={cursorPosition.x}
+				/>
 			}
+			{
+				isOnline ?
+					<OnlineGame
+						onGameEnd={setIsWin}
+						playerSign={playerSign}
+						setPlayerSign={setPlayerSign}
+						setIsGameFinished={setIsGameFinished}
+					/> :
+					<>
+						<div
+							className={s.gameTitle}
+						>
+							While you waiting in queue, you can play with bot.
+						</div>
+						<OfflineGame
+							onGameEnd={setIsWin}
+							playerSign={playerSign}
+							setPlayerSign={setPlayerSign}
+							setIsGameFinished={setIsGameFinished}
+						/>
+					</>
+			}
+
 			{
 				isGameFinished && isInGame ?
 					(isWin ?
 						<ModalCard
 							title={'You win'}
-							actionText={'Leave game'}
-							onClick={leave}
+							actionText={'Restart'}
+							onClick={playAgain}
 						/> :
 						<ModalCard
 							title={'You lose'}
-							actionText={'Leave game'}
-							onClick={leave}
+							actionText={'Restart'}
+							onClick={playAgain}
 						/>) :
 					null
 			}

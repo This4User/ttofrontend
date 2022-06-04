@@ -1,5 +1,4 @@
 import React from 'react';
-// @ts-ignore
 import s from './Button.module.css';
 
 type ButtonType = {

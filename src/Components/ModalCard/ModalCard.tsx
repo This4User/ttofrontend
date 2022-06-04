@@ -1,5 +1,5 @@
 import React from 'react';
-// @ts-ignore
+import Button from '../Button/Button';
 import s from './ModalCard.module.css'
 
 interface ModalI {
@@ -14,11 +14,11 @@ const ModalCard = ({title, actionText, onClick }: ModalI) => {
 			{
 				title
 			}
-			<button onClick={onClick}>
+			<Button onClick={onClick}>
 				{
 					actionText
 				}
-			</button>
+			</Button>
 		</div>
 	);
 };
