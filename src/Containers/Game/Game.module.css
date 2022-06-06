@@ -9,8 +9,3 @@
     padding: var(--cursor-size);
     gap: calc(var(--cell-size) / 4);
 }
-
-.gameTitle {
-    color: wheat;
-    font-size: calc(var(--cell-size) * 0.3);
-}

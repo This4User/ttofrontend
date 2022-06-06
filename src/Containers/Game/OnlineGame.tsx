@@ -6,7 +6,7 @@ import { BoardEvents } from '../../Types';
 import * as NetSubscriptions from '../../utils/EventBus';
 import { GameType } from './index';
 
-const OnlineGame: React.FunctionComponent<GameType> = ({onGameEnd, playerSign, setPlayerSign}) => {
+const OnlineGame: React.FunctionComponent<GameType> = ({onGameEnd, playerSign, setPlayerSign, startCountdown}) => {
 	const [board, setBoard] = useState<Array<CellType>>();
 	const [isInGame, setIsInGame] = useState<boolean>(false);
 
@@ -17,9 +17,10 @@ const OnlineGame: React.FunctionComponent<GameType> = ({onGameEnd, playerSign, s
 		};
 
 		const _onGameEnd = (isWin: boolean | CellValue.empty) => {
+			startCountdown()
 			setTimeout(() => {
 				Net.leave();
-			}, 10000);
+			}, 5000);
 
 			if (isWin !== CellValue.empty) {
 				if (isWin) {

@@ -1,6 +1,4 @@
 import { CellType, CellValue } from '../../Components/Cell/Cell';
-import { UserType } from '../../Types';
-import generateId from '../GenerateId';
 
 class BoardService {
 	private board: Array<CellType> = [];
@@ -9,6 +7,8 @@ class BoardService {
 	private isCanMove: boolean = true;
 
 	initBoard(): string {
+		this.isCanMove = true;
+		this.winnerSign = CellValue.empty;
 		if (this.board.length < 9) {
 			for (let i = 0; i < 9; i++) {
 				const cell = {value: CellValue.empty, index: i};
@@ -31,7 +31,7 @@ class BoardService {
 		}
 	}
 
-	makeMove(moveData: CellType): CellValue | undefined {
+	makeMove(moveData: CellType): CellValue | boolean | undefined {
 		if (this.isCanMove) {
 			this.board[moveData.index] = {
 				value: moveData.value,
@@ -43,7 +43,7 @@ class BoardService {
 				this.botMove();
 			}, 500);
 
-			return this.checkBoard();
+			return this.checkWinner();
 		}
 	}
 
@@ -95,6 +95,18 @@ class BoardService {
 		}
 
 		return undefined;
+	}
+
+	checkWinner(): CellValue.empty | boolean | undefined {
+		const winnerSign = this.checkBoard();
+		if (winnerSign) {
+			if (winnerSign !== CellValue.empty) {
+				const isActivePlayerWin = winnerSign === this.getPlayerSign();
+				return isActivePlayerWin;
+			} else {
+				return CellValue.empty;
+			}
+		}
 	}
 
 	clearBoard(): void {
