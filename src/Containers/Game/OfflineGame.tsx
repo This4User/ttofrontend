@@ -18,13 +18,9 @@ const OnlineGame: React.FunctionComponent<GameType> = ({onGameEnd, setPlayerSign
 		console.log('Offline game start');
 	}, [setPlayerSign]);
 
-	const checkWinner = (winnerSign: CellValue) => {
-		if (winnerSign !== CellValue.empty) {
-			if (winnerSign === playerSign) {
-				onGameEnd(true);
-			} else {
-				onGameEnd(false);
-			}
+	const checkWinner = (winnerSign: CellValue | undefined) => {
+		if (winnerSign){
+			onGameEnd(winnerSign);
 		}
 	};
 

@@ -16,14 +16,19 @@ const OnlineGame: React.FunctionComponent<GameType> = ({onGameEnd, playerSign, s
 			console.log(board);
 		};
 
-		const _onGameEnd = (isWin: boolean) => {
-			setTimeout(()=>{
+		const _onGameEnd = (isWin: boolean | CellValue.empty) => {
+			setTimeout(() => {
 				Net.leave();
-			}, 5000)
-			if (isWin) {
-				onGameEnd(true);
+			}, 10000);
+
+			if (isWin !== CellValue.empty) {
+				if (isWin) {
+					onGameEnd(true);
+				} else {
+					onGameEnd(false);
+				}
 			} else {
-				onGameEnd(false);
+				onGameEnd(isWin);
 			}
 		};
 

@@ -4,16 +4,6 @@ import generateId from '../GenerateId';
 
 class BoardService {
 	private board: Array<CellType> = [];
-	private readonly players: Array<UserType> = [
-		{
-			id: generateId(),
-			name: 'user',
-		},
-		{
-			id: generateId(),
-			name: 'bot',
-		},
-	];
 	private winnerSign: CellValue = CellValue.empty;
 	private activePlayerSign: boolean = Math.random() < 0.5;
 	private isCanMove: boolean = true;
@@ -77,7 +67,8 @@ class BoardService {
 		}
 	}
 
-	checkBoard(): CellValue {
+	checkBoard(): CellValue | undefined {
+		const isBoardFull = !this.board.find(cell => cell.value === CellValue.empty);
 		const lines = [
 			[0, 1, 2],
 			[3, 4, 5],
@@ -94,10 +85,16 @@ class BoardService {
 				&& this.board[a].value === this.board[b].value
 				&& this.board[a].value === this.board[c].value) {
 				this.winnerSign = this.board[a].value;
+				return this.board[a].value;
 			}
 		}
 
-		return this.winnerSign;
+		if (isBoardFull) {
+			this.winnerSign = CellValue.empty;
+			return CellValue.empty;
+		}
+
+		return undefined;
 	}
 
 	clearBoard(): void {

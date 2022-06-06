@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import circle from '../../assets/PlayerSigns/circle.png';
 import cross from '../../assets/PlayerSigns/cross.png';
 import { CellValue } from '../../Components/Cell/Cell';
@@ -26,8 +25,17 @@ const Game = () => {
 
 	const [title, setTitle] = useState<string>('While you waiting in queue, you can play with bot.');
 
-	const onGameEnd = (isWin: boolean) => {
-		isWin ? setTitle('You win!') : setTitle('You lose.');
+	const onGameEnd = (isWin: boolean | CellValue.empty) => {
+		if (isWin !== CellValue.empty) {
+			if (isWin) {
+				setTitle('You win!');
+			} else {
+				setTitle('You lose.');
+			}
+		} else {
+			setTitle('Draw!');
+		}
+
 		console.log(isWin);
 	};
 
