@@ -24,7 +24,6 @@ export enum RoomEvents {
 	leave = 'leave',
 	restart = 'restart',
 	gameStarted = 'gameStarted',
-	playAgain = 'playAgain',
 	countdown = 'countdown'
 }
 

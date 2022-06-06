@@ -6,7 +6,7 @@ import { BoardEvents } from '../../Types';
 import * as NetSubscriptions from '../../utils/EventBus';
 import { GameType } from './index';
 
-const OnlineGame: React.FunctionComponent<GameType> = ({onGameEnd, playerSign, setPlayerSign, setIsGameFinished}) => {
+const OnlineGame: React.FunctionComponent<GameType> = ({onGameEnd, playerSign, setPlayerSign}) => {
 	const [board, setBoard] = useState<Array<CellType>>();
 	const [isInGame, setIsInGame] = useState<boolean>(false);
 
@@ -16,9 +16,11 @@ const OnlineGame: React.FunctionComponent<GameType> = ({onGameEnd, playerSign, s
 			console.log(board);
 		};
 
-		const _setWinner = (winnerSign: CellValue) => {
-			setIsGameFinished(true);
-			if (winnerSign === playerSign) {
+		const _onGameEnd = (isWin: boolean) => {
+			setTimeout(()=>{
+				Net.leave();
+			}, 5000)
+			if (isWin) {
 				onGameEnd(true);
 			} else {
 				onGameEnd(false);
@@ -33,12 +35,12 @@ const OnlineGame: React.FunctionComponent<GameType> = ({onGameEnd, playerSign, s
 		setIsInGame(true);
 
 		NetSubscriptions.subscribe(BoardEvents.getBoard, _setBoard);
-		NetSubscriptions.subscribe(BoardEvents.gameFinished, _setWinner);
+		NetSubscriptions.subscribe(BoardEvents.gameFinished, _onGameEnd);
 		NetSubscriptions.subscribe(BoardEvents.getPlayerSign, _setPlayerSign);
 
 		return () => {
 			NetSubscriptions.unsubscribe(BoardEvents.getBoard, _setBoard);
-			NetSubscriptions.unsubscribe(BoardEvents.gameFinished, _setWinner);
+			NetSubscriptions.unsubscribe(BoardEvents.gameFinished, _onGameEnd);
 			NetSubscriptions.unsubscribe(BoardEvents.getPlayerSign, _setPlayerSign);
 		};
 	}, []);

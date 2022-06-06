@@ -6,7 +6,7 @@ import { GameType } from './index';
 
 const boardService = new BoardService();
 
-const OnlineGame: React.FunctionComponent<GameType> = ({onGameEnd, setPlayerSign, playerSign, setIsGameFinished}) => {
+const OnlineGame: React.FunctionComponent<GameType> = ({onGameEnd, setPlayerSign, playerSign}) => {
 	const [board, setBoard] = useState<Array<CellType>>();
 	const [isInGame, setIsInGame] = useState<boolean>(false);
 
@@ -21,10 +21,8 @@ const OnlineGame: React.FunctionComponent<GameType> = ({onGameEnd, setPlayerSign
 	const checkWinner = (winnerSign: CellValue) => {
 		if (winnerSign !== CellValue.empty) {
 			if (winnerSign === playerSign) {
-				setIsGameFinished(true);
 				onGameEnd(true);
 			} else {
-				setIsGameFinished(true);
 				onGameEnd(false);
 			}
 		}

@@ -1,4 +1,4 @@
-.gameScreen{
+.gameScreen {
     cursor: none;
     display: flex;
     flex-direction: column;
@@ -7,10 +7,10 @@
     height: 100vh;
     width: 100vw;
     padding: var(--cursor-size);
+    gap: calc(var(--cell-size) / 4);
 }
 
-.gameTitle{
-    margin: calc(var(--cell-size)/4);
+.gameTitle {
     color: wheat;
-    font-size: calc(var(--cell-size)*0.3);
+    font-size: calc(var(--cell-size) * 0.3);
 }
