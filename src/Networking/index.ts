@@ -3,7 +3,9 @@ import { CellValue } from '../Components/Cell/Cell';
 import { BoardEvents, RoomEvents, SocketEvents } from '../Types';
 import { broadcast } from '../utils/EventBus';
 
-const socket: Socket = io('http://192.168.0.109:2800/');
+const socket: Socket = io(process.env.REACT_APP_BACKEND_URL as string, {
+	autoConnect: false,
+});
 
 socket.on(SocketEvents.connect, () => broadcast(SocketEvents.connect, socket.id));
 socket.on(SocketEvents.disconnect, () => broadcast(SocketEvents.disconnect));
@@ -17,6 +19,7 @@ socket.on(RoomEvents.gameStarted, () => broadcast(RoomEvents.gameStarted));
 socket.on(RoomEvents.leave, () => broadcast(RoomEvents.leave));
 
 export const addToQueue = () => {
+	socket.connect();
 	socket.emit('addToQueue');
 	console.log('add to Queue');
 };
