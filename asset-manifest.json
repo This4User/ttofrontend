@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/ttofrontend/static/css/main.d3333827.css",
-    "main.js": "/ttofrontend/static/js/main.7da918a6.js",
+    "main.js": "/ttofrontend/static/js/main.0aa21334.js",
     "static/media/circle.png": "/ttofrontend/static/media/circle.b2d5c3ee5d44c6aaea28.png",
     "index.html": "/ttofrontend/index.html",
     "main.d3333827.css.map": "/ttofrontend/static/css/main.d3333827.css.map",
-    "main.7da918a6.js.map": "/ttofrontend/static/js/main.7da918a6.js.map"
+    "main.0aa21334.js.map": "/ttofrontend/static/js/main.0aa21334.js.map"
   },
   "entrypoints": [
     "static/css/main.d3333827.css",
-    "static/js/main.7da918a6.js"
+    "static/js/main.0aa21334.js"
   ]
 }
