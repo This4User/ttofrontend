@@ -18,7 +18,6 @@ export type CellType = {
 type CellPropsType = {
 	cell: CellType;
 	onClick: React.MouseEventHandler<HTMLDivElement>;
-	onTouch: React.TouchEventHandler<HTMLDivElement>;
 }
 
 const getCellValue = (cell: CellType): string => {
@@ -28,17 +27,16 @@ const getCellValue = (cell: CellType): string => {
 	return CellValue.empty;
 };
 
-const Cell: React.FunctionComponent<CellPropsType> = ({cell, onClick, onTouch}) => {
+const Cell: React.FunctionComponent<CellPropsType> = ({cell, onClick}) => {
 
 	const cellValue = getCellValue(cell);
 
 	return (
 		<div
 			className={s.cell}
-			onClick={onClick}
-			onTouchStart={(e) => {
+			onClick={(e) => {
 				e.preventDefault();
-				onTouch(e);
+				onClick(e);
 			}}
 		>
 			{

@@ -44,10 +44,6 @@ const OnlineGame: React.FunctionComponent<GameType> = ({onGameEnd, setPlayerSign
 		const isWin = boardService.makeMove({value: playerSign, index});
 		setBoard(boardService.getBoard());
 		checkWinner(isWin);
-		setTimeout(() => {
-			checkWinner(boardService.checkBoard());
-			setBoard(boardService.getBoard());
-		}, 500);
 	};
 
 	const restart = () => {

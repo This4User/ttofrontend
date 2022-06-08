@@ -9,6 +9,7 @@ interface BoardI {
 }
 
 const Board = ({board, onClick}: BoardI) => {
+
 	return (
 		<div className={s.board}>
 			{
@@ -16,9 +17,6 @@ const Board = ({board, onClick}: BoardI) => {
 					key={cell.index}
 					cell={cell}
 					onClick={() => {
-						onClick(index);
-					}}
-					onTouch={() => {
 						onClick(index);
 					}}
 				/>)

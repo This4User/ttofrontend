@@ -39,31 +39,33 @@ class BoardService {
 			};
 			this.isCanMove = false;
 
-			setTimeout(() => {
-				this.botMove();
-			}, 500);
+			this.botMove();
 
 			return this.checkWinner();
 		}
 	}
 
 	botMove() {
+		const isBoardNotFull = this.board.find(cell => cell.value === CellValue.empty);
 		const botSign = this.getPlayerSign() === CellValue.circle ? CellValue.cross : CellValue.circle;
-		let randomCellIndex = Math.floor(Math.random() * this.board.length);
-		if (this.winnerSign !== CellValue.empty) {
-			return;
-		}
-		if (this.board[randomCellIndex].value === CellValue.empty) {
-			this.board[randomCellIndex] = {
-				value: botSign,
-				index: randomCellIndex,
-			};
-			this.isCanMove = true;
-			console.log('botMove');
-			return;
-		} else {
-			randomCellIndex = Math.floor(Math.random() * this.board.length);
-			this.botMove();
+
+		if (isBoardNotFull) {
+			let randomCellIndex = Math.floor(Math.random() * this.board.length);
+			if (this.winnerSign !== CellValue.empty) {
+				return;
+			}
+			if (this.board[randomCellIndex].value === CellValue.empty) {
+				this.board[randomCellIndex] = {
+					value: botSign,
+					index: randomCellIndex,
+				};
+				this.isCanMove = true;
+				console.log('botMove');
+				return;
+			} else {
+				randomCellIndex = Math.floor(Math.random() * this.board.length);
+				this.botMove();
+			}
 		}
 	}
 
@@ -101,6 +103,7 @@ class BoardService {
 		const winnerSign = this.checkBoard();
 		if (winnerSign) {
 			if (winnerSign !== CellValue.empty) {
+				this.isCanMove = false;
 				const isActivePlayerWin = winnerSign === this.getPlayerSign();
 				return isActivePlayerWin;
 			} else {
