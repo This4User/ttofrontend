@@ -9,6 +9,7 @@ const boardService = new BoardService();
 const OnlineGame: React.FunctionComponent<GameType> = ({onGameEnd, setPlayerSign, playerSign, startCountdown}) => {
 	const [board, setBoard] = useState<Array<CellType>>();
 	const [isInGame, setIsInGame] = useState<boolean>(false);
+	const [isRoundEnd, setIsRoundEnd] = useState<boolean>(false);
 
 	useEffect(() => {
 		setIsInGame(true);
@@ -24,6 +25,7 @@ const OnlineGame: React.FunctionComponent<GameType> = ({onGameEnd, setPlayerSign
 
 	const checkWinner = (winnerSign: CellValue | boolean | undefined) => {
 		if (winnerSign) {
+			setIsRoundEnd(true);
 			startCountdown();
 			setTimeout(() => {
 				restart();
@@ -41,11 +43,13 @@ const OnlineGame: React.FunctionComponent<GameType> = ({onGameEnd, setPlayerSign
 	};
 
 	const makeMove = (index: number): void => {
-		const isWin = boardService.makeMove({value: playerSign, index});
-		setBoard(boardService.getBoard());
-		checkWinner(isWin);
-		checkWinner(boardService.checkBoard());
-		setBoard(boardService.getBoard());
+		if (!isRoundEnd) {
+			const isWin = boardService.makeMove({value: playerSign, index});
+			setBoard(boardService.getBoard());
+			checkWinner(isWin);
+			checkWinner(boardService.checkBoard());
+			setBoard(boardService.getBoard());
+		}
 	};
 
 	const restart = () => {
@@ -53,6 +57,7 @@ const OnlineGame: React.FunctionComponent<GameType> = ({onGameEnd, setPlayerSign
 		boardService.initBoard();
 		setPlayerSign(boardService.getPlayerSign());
 		setBoard(boardService.getBoard());
+		setIsRoundEnd(false);
 	};
 
 	return (
