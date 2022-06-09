@@ -3,6 +3,7 @@ import circle from '../../assets/PlayerSigns/circle.png';
 import cross from '../../assets/PlayerSigns/cross.png';
 import { CellValue } from '../../Components/Cell/Cell';
 import Cursor from '../../Components/Cursor/Cursor';
+import Firework from '../../Components/Fireworks/Fireworks';
 import Title from '../../Components/Title/Title';
 import * as Net from '../../Networking';
 import { Point, RoomEvents, SocketEvents } from '../../Types';
@@ -31,11 +32,13 @@ const Game = () => {
 	const [title, setTitle] = useState<string>('While you waiting in queue, you can play with bot.');
 	const [countdown, setCountdown] = useState<number>(5);
 	const [isCountdownStart, setIsCountdownStart] = useState<boolean>(false);
+	const [isFirework, setIsFirework] = useState<boolean>(false);
 
 	const onGameEnd = (isWin: boolean | CellValue.empty) => {
 		if (isWin !== CellValue.empty) {
 			if (isWin) {
 				setTitle('You win!');
+				setIsFirework(true);
 				setWinCount(winCount + 1);
 			} else {
 				setTitle('You lose.');
@@ -66,6 +69,8 @@ const Game = () => {
 				setTimeout(() => setCountdown(countdown - 1), 1000);
 			} else {
 				setIsCountdownStart(false);
+				setTitle('');
+				setIsFirework(false);
 				setCountdown(5);
 			}
 		}
@@ -155,6 +160,9 @@ const Game = () => {
 				isCountdownStart && <Title>
 					{countdown}
 				</Title>
+			}
+			{
+				isFirework && <Firework/>
 			}
 		</div>
 	);
