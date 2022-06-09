@@ -52,6 +52,15 @@ const Game = () => {
 	};
 
 	useEffect(() => {
+		if (winCount) {
+			localStorage.setItem('winCount', JSON.stringify(winCount));
+		}
+		if (loseCount) {
+			localStorage.setItem('loseCount', JSON.stringify(loseCount));
+		}
+	}, [winCount, loseCount]);
+
+	useEffect(() => {
 		if (isCountdownStart) {
 			if (countdown > 0) {
 				setTimeout(() => setCountdown(countdown - 1), 1000);
@@ -64,6 +73,11 @@ const Game = () => {
 	}, [countdown, isCountdownStart]);
 
 	useEffect(() => {
+		const winCount = Number(localStorage.getItem('winCount'));
+		const loseCount = Number(localStorage.getItem('loseCount'));
+
+		setWinCount(winCount);
+		setLoseCount(loseCount);
 
 		const _connectError = (err: any) => {
 			console.log(err);

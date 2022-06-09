@@ -1,4 +1,4 @@
-.button{
+.button {
     font-size: 36px;
     color: var(--secondary);
     background-color: var(--background-secondary);
@@ -7,10 +7,10 @@
     outline: none;
     position: relative;
     border-radius: 10px;
-    transition: 100ms;
+    transition: 1s ease-in-out;
 }
 
-.button:hover{
+.button:hover {
     color: #ffffff !important;
     background-color: #333333;
     transition: 100ms;
@@ -21,7 +21,7 @@
     background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
     position: absolute;
     top: -2px;
-    left:-2px;
+    left: -2px;
     background-size: 400%;
     z-index: -1;
     filter: blur(5px);
@@ -53,10 +53,71 @@
     border-radius: 10px;
 }
 
-.button a{
+.button a {
     text-decoration: none;
 }
 
-.button a:active{
-    color:var(--secondary) ;
+.button a:active {
+    color: var(--secondary);
+}
+
+.buttonToBoard {
+    font-size: 36px;
+    color: var(--secondary);
+    background-color: var(--background-secondary);
+    padding: 10px;
+    border: none;
+    outline: none;
+    position: relative;
+    border-radius: 10px;
+    animation: 1s buttonToBoard;
+    transition: 1s ease-in-out;
+}
+
+@keyframes buttonToBoard {
+    from {
+        background-position: 0 0;
+        width: calc(var(--board-size) / 4);
+        height: calc(var(--board-size) / 4);
+        border-radius: calc(30px / 4);
+    }
+    50% {
+        background-position: 400% 0;
+    }
+    to {
+        background-color: var(--background-primary);
+        background-position: 0 0;
+        width: var(--board-size);
+        height: var(--board-size);
+        border-radius: 30px;
+    }
+}
+
+.buttonToBoard:before {
+    content: '';
+    background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    background-size: 400%;
+    z-index: -1;
+    filter: blur(5px);
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    animation: glowing 20s linear infinite;
+    opacity: 1;
+    transition: opacity .3s ease-in-out;
+    border-radius: 30px;
+}
+
+.buttonToBoard:after {
+    z-index: -1;
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #111;
+    left: 0;
+    top: 0;
+    border-radius: 30px;
 }

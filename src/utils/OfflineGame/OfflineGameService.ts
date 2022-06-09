@@ -99,13 +99,12 @@ class BoardService {
 		return undefined;
 	}
 
-	checkWinner(): CellValue.empty | boolean | undefined {
+	checkWinner(): CellValue | undefined {
 		const winnerSign = this.checkBoard();
 		if (winnerSign) {
 			if (winnerSign !== CellValue.empty) {
 				this.isCanMove = false;
-				const isActivePlayerWin = winnerSign === this.getPlayerSign();
-				return isActivePlayerWin;
+				return winnerSign;
 			} else {
 				return CellValue.empty;
 			}

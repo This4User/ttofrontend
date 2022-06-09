@@ -22,20 +22,20 @@ const OnlineGame: React.FunctionComponent<GameType> = ({onGameEnd, setPlayerSign
 		};
 	}, [setPlayerSign]);
 
-	const checkWinner = (isWin: CellValue | boolean | undefined) => {
-		if (isWin) {
+	const checkWinner = (winnerSign: CellValue | boolean | undefined) => {
+		if (winnerSign) {
 			startCountdown();
 			setTimeout(() => {
 				restart();
 			}, 5000);
-			if (isWin !== CellValue.empty) {
-				if (isWin) {
+			if (winnerSign !== CellValue.empty) {
+				if (winnerSign === playerSign) {
 					onGameEnd(true);
 				} else {
 					onGameEnd(false);
 				}
 			} else {
-				onGameEnd(isWin);
+				onGameEnd(winnerSign);
 			}
 		}
 	};
@@ -44,6 +44,8 @@ const OnlineGame: React.FunctionComponent<GameType> = ({onGameEnd, setPlayerSign
 		const isWin = boardService.makeMove({value: playerSign, index});
 		setBoard(boardService.getBoard());
 		checkWinner(isWin);
+		checkWinner(boardService.checkBoard());
+		setBoard(boardService.getBoard());
 	};
 
 	const restart = () => {

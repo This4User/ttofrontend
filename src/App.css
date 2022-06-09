@@ -10,6 +10,7 @@
     --background-primary: #9BA3EB;
     --background-secondary: #DBDFFD;
     --cell-size: calc((100vh + 100vw)/2/8);
+    --board-size: calc(var(--cell-size)*3 + var(--cell-size)/2);
     --cursor-size: calc(var(--cell-size) - 50px);
 }
 

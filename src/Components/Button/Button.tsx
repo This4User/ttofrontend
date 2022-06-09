@@ -5,13 +5,13 @@ type ButtonType = {
 	text?: string;
 	onClick?: React.MouseEventHandler<HTMLButtonElement>;
 	children?: React.ReactNode;
-
+	isAnimation?: boolean;
 }
 
-const Button: React.FunctionComponent<ButtonType> = ({text, onClick, children}) => {
+const Button: React.FunctionComponent<ButtonType> = ({text, onClick, children, isAnimation}) => {
 	return (
 		<button
-			className={s.button}
+			className={!isAnimation ? s.button : s.buttonToBoard}
 			onClick={onClick}
 		>
 			{
