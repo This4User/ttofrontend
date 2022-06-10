@@ -1,5 +1,6 @@
-#Tic-Tac-Toe online
-###This is frontend for my tic-tac-toe project.
-####Github pages: https://this4user.github.io/ttofrontend/
+# Tic-Tac-Toe online
+### This is frontend for my tic-tac-toe project.
 
-####Tech stack: ReactJS, Typescript, Socket IO.
+#### Github pages: https://this4user.github.io/ttofrontend/
+
+#### Tech stack: ReactJS, Typescript, Socket IO.
