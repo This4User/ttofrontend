@@ -1,4 +1,4 @@
-import { CellType, CellValue } from '../../Components/Cell/Cell';
+import { CellType, CellValue } from "../../Components/Cell/Cell";
 
 class BoardService {
 	private board: Array<CellType> = [];
@@ -11,12 +11,12 @@ class BoardService {
 		this.winnerSign = CellValue.empty;
 		if (this.board.length < 9) {
 			for (let i = 0; i < 9; i++) {
-				const cell = {value: CellValue.empty, index: i};
+				const cell = { value: CellValue.empty, index: i };
 				this.board.push(cell);
 			}
 		}
 
-		return 'Board initialize';
+		return "Board initialize";
 	}
 
 	getBoard(): Array<CellType> {
@@ -32,7 +32,7 @@ class BoardService {
 	}
 
 	makeMove(moveData: CellType): CellValue | boolean | undefined {
-		if (this.isCanMove) {
+		if (this.isCanMove && this.board[moveData.index].value === CellValue.empty) {
 			this.board[moveData.index] = {
 				value: moveData.value,
 				index: moveData.index,
@@ -60,7 +60,7 @@ class BoardService {
 					index: randomCellIndex,
 				};
 				this.isCanMove = true;
-				console.log('botMove');
+				console.log("botMove");
 				return;
 			} else {
 				randomCellIndex = Math.floor(Math.random() * this.board.length);
@@ -72,17 +72,17 @@ class BoardService {
 	checkBoard(): CellValue | undefined {
 		const isBoardFull = !this.board.find(cell => cell.value === CellValue.empty);
 		const lines = [
-			[0, 1, 2],
-			[3, 4, 5],
-			[6, 7, 8],
-			[0, 3, 6],
-			[1, 4, 7],
-			[2, 5, 8],
-			[0, 4, 8],
-			[2, 4, 6],
+			[ 0, 1, 2 ],
+			[ 3, 4, 5 ],
+			[ 6, 7, 8 ],
+			[ 0, 3, 6 ],
+			[ 1, 4, 7 ],
+			[ 2, 5, 8 ],
+			[ 0, 4, 8 ],
+			[ 2, 4, 6 ],
 		];
 		for (let i = 0; i < lines.length; i++) {
-			const [a, b, c] = lines[i];
+			const [ a, b, c ] = lines[i];
 			if (this.board[a].value !== CellValue.empty
 				&& this.board[a].value === this.board[b].value
 				&& this.board[a].value === this.board[c].value) {
